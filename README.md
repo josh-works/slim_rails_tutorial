@@ -1,24 +1,17 @@
-# README
+As part of some work I'm doing for Alex & Trevor at https://www.teamworkonline.com/, I needed a 'kick the tires' application.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Teamwork online uses the following tools which I'm aiming to integrate as it feels helpful in this tutorial, AKA a guide I'm writing for myself.
 
-Things you may want to cover:
 
-* Ruby version
+```ruby
+gem "slim-rails" # https://github.com/amatsuda/kaminari
+gem "bootstrap"
+gem "bootstrap4-kaminari-views"
+gem "kaminari", "~> 1.2.1"
 
-* System dependencies
+```
 
-* Configuration
+Follow along here on Github (https://github.com/josh-works/slim_rails_tutorial/tree/main) or on Heroku: https://rails-slim-tutorial.herokuapp.com/.
 
-* Database creation
+I'm allocating not a lot of time to this, so lets get started.
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
