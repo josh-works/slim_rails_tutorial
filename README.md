@@ -182,3 +182,27 @@ Taking a few min break. Took longer than I'd hoped to just get _here_
 ------------------
 
 Next, lets add faker so I can have 100 quotes, so I'll get some good pagination stuff. Then I'll drop in slim templating, pushing all to heroku all the while.
+
+ok, adding/installing `slim-rails`.
+
+Using https://gist.github.com/hmans/1aa5acac56c7ee995900fe65040adeb3:
+
+```
+doctype html
+html
+  head
+    title My App
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    = csrf_meta_tags
+    = csp_meta_tag
+
+  body
+    = yield
+```
+
+committing it all, reloading it, all is working it seems. I now am using `application.html.slim` instead of `application.html.erb`, and it just seems to magically be working. That was easy.
+
+Lets add bootstrap, but first doing bootstrap and _then_ slim, rather than the other way around.
+
