@@ -18,7 +18,8 @@ I'm allocating not a lot of time to this, so lets get started.
 ---------------
 
 ```shell
-rails _6.1.3_ new slim_rails_tutorial -d postgresql
+gem install rails -v 6.1.4.4
+rails _6.1.4.4_ new slim_rails_tutorial -d postgresql
 cd slim_rails_tutorial
 
 gc -m "initial commit"
@@ -42,12 +43,6 @@ bundle lock --add-platform x86_64-linux
 rails s
 ```
 
-OK, lets get some hello-world stuff going w/Slim. Over to: https://github.com/slim-template/slim-rails
-
-Adding to Gemfile: `gem "slim-rails"`, `bundle install`.
-
-That was easy. 
-
 Let's generate a simple model of `quotes` that we'll fill with Lorem Ipsum, via faker, and off to the races.
 
 In my `seeds.rb` I'm going to mock up some of the model that I hope to have, sorta a TDD:
@@ -55,8 +50,12 @@ In my `seeds.rb` I'm going to mock up some of the model that I hope to have, sor
 ```ruby
 # seeds.rb
 
-50.times do |n|
-  Quote.new(Faker::Quote)
+Quote.create!(body: "May you live in interesting times", author: "unknown")
+Quote.create!(body: "That which does not kill us makes us stronger.", author: "Friedrich Nietzsche")
+
+
+100.times do 
+  Quote.create!(body: Faker::Quote.famous_last_words, author: Faker::Name.unique.name)
 end
 ```
 
@@ -65,7 +64,7 @@ Then `root` to `QuotesController#Index`, something like:
 ```ruby
 # routes.rb
 
-root: 'QuotesController#index'
+root to: 'quotes#index'
 ```
 
 (have not used `rails generate scaffold` recently? me neither. I used `tldr rails generate` to remind myself.)
@@ -93,13 +92,6 @@ Reload again, get:
 ```
 Webpacker::Manifest::MissingEntryError in Quotes#index
 ```
-Restart rails server, still an error. Lets create one quote real quick in the rails console:
-
-```ruby
-Quote
-```
-
-Nope, not it. 
 
 Found stack overflow question/answer:
 
@@ -107,18 +99,7 @@ Found stack overflow question/answer:
 run `rails webpacker:install`
 ```
 
-didn't do it, I had the wrong `yarn` version, I think. Found [https://stackoverflow.com/questions/60491830/error-cannot-find-module-rails-webpacker-rails-6](https://stackoverflow.com/questions/60491830/error-cannot-find-module-rails-webpacker-rails-6), did:
-
-```
-yarn add @rails/webpacker
-@npmcli/fs@1.1.0: The engine "node" is incompatible with this module. Expected version "^12.13.0 || ^14.15.0 || >=16". Got "14.0.0"
-
-rm -rf node_modules
-yarn install --check_files
-yarn add @rails/webpacker
-rails webpacker:install
-
-```
+which didn't do it, I had the wrong `yarn` version, I think. Found [https://stackoverflow.com/questions/60491830/error-cannot-find-module-rails-webpacker-rails-6](https://stackoverflow.com/questions/60491830/error-cannot-find-module-rails-webpacker-rails-6), did:
 
 OK, using the wrong version of node. 
 
@@ -136,6 +117,7 @@ export NVM_DIR="$HOME/.nvm"
   # but I (Josh) don't use the bottom line because it slows my shell down last time I added it, IIRC.
 
 ```
+
 ```shell
 nvm install 16
 
@@ -149,6 +131,10 @@ rails webpacker:install # huzzah it worked
 Restart the rails server and...
 
 Voilà, we're good to go!
+
+```
+rails db:setup
+```
 
 ---------------
 
@@ -179,30 +165,4 @@ heroku run rails db:migrate
 and re-load the app. connect to the console, make new things. you're good to go.
 
 Taking a few min break. Took longer than I'd hoped to just get _here_
-------------------
-
-Next, lets add faker so I can have 100 quotes, so I'll get some good pagination stuff. Then I'll drop in slim templating, pushing all to heroku all the while.
-
-ok, adding/installing `slim-rails`.
-
-Using https://gist.github.com/hmans/1aa5acac56c7ee995900fe65040adeb3:
-
-```
-doctype html
-html
-  head
-    title My App
-    meta name="viewport" content="width=device-width, initial-scale=1.0"
-    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
-    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
-    = csrf_meta_tags
-    = csp_meta_tag
-
-  body
-    = yield
-```
-
-committing it all, reloading it, all is working it seems. I now am using `application.html.slim` instead of `application.html.erb`, and it just seems to magically be working. That was easy.
-
-Lets add bootstrap, but first doing bootstrap and _then_ slim, rather than the other way around.
 
